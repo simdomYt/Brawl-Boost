@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simdom Brawl Stars Boost</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Rubik:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Основні налаштування */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rubik', sans-serif; /* Надійний кіберспортивний шрифт */
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1b0a11 0%, #0b0609 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- АНІМОВАНІ 3D-ФІГУРИ НА ФОНІ --- */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Щоб фігури не заважали клікати по сайту */
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(222, 30, 38, 0.2), rgba(255, 215, 0, 0.1));
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(2px);
+            animation: rotateShape 12s linear infinite;
+        }
+
+        /* Кристал 1 */
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            top: 15%;
+            left: 8%;
+            border-radius: 20px 0 20px 0;
+            animation-duration: 18s;
+        }
+
+        /* Кристал 2 */
+        .shape-2 {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            right: 5%;
+            border-radius: 50% 10% 50% 10%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.15), rgba(0, 210, 255, 0.1));
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        /* Кристал 3 (маленький) */
+        .shape-3 {
+            width: 50px;
+            height: 50px;
+            bottom: 15%;
+            left: 10%;
+            border-radius: 12px;
+            animation-duration: 14s;
+        }
+
+        /* Кристал 4 (верхній правий) */
+        .shape-4 {
+            width: 70px;
+            height: 70px;
+            top: 25%;
+            right: 12%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation-duration: 20s;
+        }
+
+        @keyframes rotateShape {
+            0% { transform: rotate(0deg) translateY(0px); }
+            50% { transform: rotate(180deg) translateY(15px); }
+            100% { transform: rotate(360deg) translateY(0px); }
+        }
+
+        /* --- КОНТЕЙНЕР САЙТУ --- */
+        .site-container {
+            max-width: 550px;
+            width: 100%;
+            background: rgba(18, 10, 14, 0.75);
+            border: 3px solid #de1e26; 
+            box-shadow: 0 0 40px rgba(222, 30, 38, 0.3);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 5; /* Контент завжди над фігурами фонy */
+        }
+
+        /* Головний логотип */
+        .logo-main {
+            font-family: 'Rubik Mono One', sans-serif;
+            font-size: 2.3rem; /* Оптимально для екранів телефонів */
+            color: #de1e26;
+            text-shadow: 
+                -2px -2px 0 #000,  
+                 2px -2px 0 #000,
+                -2px  2px 0 #000,
+                 2px  2px 0 #000,
+                 0px  6px 0px #70090d;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            font-size: 1.4rem;
+            color: #ffffff;
+            font-weight: 900;
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            margin-bottom: 25px;
+        }
+
+        /* Текстовий опис */
+        .info-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #e5dee5;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        /* Кнопка копіювання ID */
+        .id-box {
+            display: inline-block;
+            background: #231217;
+            border: 2px dashed #ffd700;
+            color: #ffd700;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+            position: relative;
+            -webkit-tap-highlight-color: transparent; /* Прибирає синій спалах при натисканні на телефоні */
+        }
+
+        .id-box:hover {
+            background: #ffd700;
+            color: #000;
+        }
+
+        /* Спливаюче повідомлення про копіювання */
+        .copy-toast {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: #fff;
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .id-box.copied .copy-toast {
+            opacity: 1;
+        }
+
+        /* Заголовки блоків з цінами */
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-align: left;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px #000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Прайс-лист */
+        .price-list {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 10px 15px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .price-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Спеціальний стиль для акцій */
+        .price-list .premium-item {
+            border-bottom: none;
+            background: rgba(255, 215, 0, 0.04);
+            margin: 8px -15px -10px -15px;
+            padding: 14px 15px;
+            border-radius: 0 0 16px 16px;
+            border-top: 2px solid #ffd700;
+        }
+
+        .price-val {
+            color: #69f0ae;
+            font-weight: 900;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        /* Ефект переливного золота для слова ПРАЙМ */
+        .prime-text {
+            background: linear-gradient(90deg, #ffd700, #fff6a3, #ffd700, #c59b27, #ffd700);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            animation: goldenShine 3s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes goldenShine {
+            to { background-position: 200% center; }
+        }
+
+        /* Плашка кешбеку */
+        .cashback-badge {
+            background: #de1e26;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-left: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Інструкція до замовлення */
+        .order-info {
+            font-size: 0.9rem;
+            color: #b5afb5;
+            line-height: 1.5;
+            margin: 25px 0 20px 0;
+        }
+
+        /* Кнопка замовлення в Телеграм */
+        .tg-button {
+            display: block;
+            background: linear-gradient(135deg, #0088cc, #00a2ed);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 20px rgba(0, 136, 204, 0.3);
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Адаптація під маленькі екрани (старі телефони) */
+        @media (max-width: 375px) {
+            .logo-main { font-size: 1.9rem; }
+            .logo-sub { font-size: 1.2rem; }
+            .price-item { font-size: 0.85rem; }
+            .id-box { font-size: 1rem; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <div class="site-container">
+        <div class="logo-main">Brawl Stars</div>
+        <div class="logo-sub">Boost</div>
+
+        <p class="info-text">
+            Прокачаю ваший акаунт у Бравл Старс. Можете подивитись мій профіль по цьому ID:
+        </p>
+
+        <div class="id-box" id="idBox" onclick="copyId()">
+            #GCJ8RVPYC
+            <span class="copy-toast">Скопійовано!</span>
+        </div>
+
+        <p class="info-text" style="margin-bottom: 10px;">
+            Я апаю <span class="prime-text">прайми</span> або просто загальні кубки, ціни нижче:
+        </p>
+
+        <div class="section-title">➔ Прокачка Праймів</div>
+        <div class="price-list">
+            <div class="price-item">
+                <span>З дерева на бронзу</span>
+                <span class="price-val">15 грн</span>
+            </div>
+            <div class="price-item">
+                <span>З бронзи на срібло</span>
+                <span class="price-val">15 грн</span>
+            </div>
+            <div class="price-item">
+                <span>З срібла на золото</span>
+                <span class="price-val">15 грн</span>
+            </div>
+            <div class="price-item">
+                <span>З золота на <span class="prime-text">ПРАЙМ</span></span>
+                <span class="price-val">20 грн</span>
+            </div>
+            <div class="price-item premium-item">
+                <span>Зразу <span class="prime-text">ПРАЙМ</span> <span class="cashback-badge">Кешбек 10 грн</span></span>
+                <span class="price-val">60 грн</span>
+            </div>
+        </div>
+
+        <div class="section-title">➔ Набивання кубків</div>
+        <div class="price-list">
+            <div class="price-item">
+                <span>100 кубків</span>
+                <span class="price-val">5 грн</span>
+            </div>
+            <div class="price-item">
+                <span>200 кубків</span>
+                <span class="price-val">10 грн</span>
+            </div>
+            <div class="price-item">
+                <span>300 кубків</span>
+                <span class="price-val">15 грн</span>
+            </div>
+            <div class="price-item">
+                <span>400 кубків</span>
+                <span class="price-val">20 грн</span>
+            </div>
+            <div class="price-item">
+                <span>500 кубків</span>
+                <span class="price-val">25 грн</span>
+            </div>
+            <div class="price-item">
+                <span>600 кубків</span>
+                <span class="price-val">30 грн</span>
+            </div>
+            <div class="price-item">
+                <span>700 кубків</span>
+                <span class="price-val">35 грн</span>
+            </div>
+            <div class="price-item">
+                <span>800 кубків</span>
+                <span class="price-val">40 грн</span>
+            </div>
+            <div class="price-item">
+                <span>900 кубків</span>
+                <span class="price-val">45 грн</span>
+            </div>
+            <div class="price-item premium-item">
+                <span>1000 кубків <span class="cashback-badge">Кешбек 2 грн</span></span>
+                <span class="price-val">43 грн</span>
+            </div>
+        </div>
+
+        <p class="order-info">
+            Замовляти у нас в телеграмі. Просто пишете, що вам потрібно, ми кажем ціну по нашому списку і очікуйте декілька днів на буст вашого акаунта.
+        </p>
+
+        <a href="https://t.me/youtuber_simdom" target="_blank" class="tg-button">
+            ЗАМОВИТИ
+        </a>
+    </div>
+
+    <script>
+        function copyId() {
+            const idText = "#GCJ8RVPYC";
+            navigator.clipboard.writeText(idText).then(() => {
+                const idBox = document.getElementById('idBox');
+                idBox.classList.add('copied');
+                
+                setTimeout(() => {
+                    idBox.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Помилка копіювання: ', err);
+            });
+        }
+    </script>
+
+</body>
+</html>
